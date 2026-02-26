@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="glass-card p-4 text-center">
+            <h2 class="text-primary">{{ total_submissions }}</h2>
+            <p class="text-muted mb-0">Total Submissions</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card p-4 text-center">
+            <h2 class="text-danger">{{ total_frauds }}</h2>
+            <p class="text-muted mb-0">Detected Frauds</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card p-4 text-center">
+            <h2 class="text-success">{{ model_accuracy }}%</h2>
+            <p class="text-muted mb-0">Model Accuracy</p>
+        </div>
+    </div>
+</div>
+
+<div class="glass-card p-4">
+    <h3><i class="fas fa-database text-primary me-2"></i>Fraud Submission Database</h3>
+    <div class="table-responsive mt-4">
+        <table class="table table-dark table-hover border-secondary">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Content Snippet</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sub in submissions %}
+                <tr>
+                    <td>{{ sub.id }}</td>
+                    <td>{{ sub.user.username if sub.user else 'Guest' }}</td>
+                    <td><span class="text-muted small">{{ sub.job_text[:60] }}...</span></td>
+                    <td><span class="badge {{ 'bg-danger' if sub.prediction == 'Fake' else 'bg-success' }}">{{
+                            sub.prediction }}</span></td>
+                    <td>{{ "%.2f" % (sub.confidence * 100) }}%</td>
+                    <td>{{ sub.timestamp.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

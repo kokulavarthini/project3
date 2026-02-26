@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="glass-card p-4">
+            <h3><i class="fas fa-search-plus text-primary me-2"></i>Analyze Job Offer</h3>
+            <p class="text-muted">Paste the internship or job offer description, email text, or message below.</p>
+            <form action="{{ url_for('predict') }}" method="POST">
+                <div class="mb-3">
+                    <textarea name="job_text" class="form-control bg-dark text-white border-secondary" rows="8"
+                        placeholder="Enter job description here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg px-5">Analyze Now</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="glass-card p-4">
+            <h4><i class="fas fa-history text-primary me-2"></i>Recent History</h4>
+            <div class="list-group list-group-flush mt-3 bg-transparent">
+                {% for submission in history %}
+                <div class="list-group-item bg-transparent border-secondary py-3 px-0">
+                    <div class="d-flex justify-content-between">
+                        <span class="badge {{ 'bg-danger' if submission.prediction == 'Fake' else 'bg-success' }}">
+                            {{ submission.prediction }}
+                        </span>
+                        <small class="text-muted">{{ submission.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+                    </div>
+                    <p class="mb-0 mt-2 text-truncate text-muted small">{{ submission.job_text[:50] }}...</p>
+                </div>
+                {% else %}
+                <p class="text-muted">No submissions yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if result %}
+<div class="modal fade show d-block" style="background: rgba(0,0,0,0.8);" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="glass-card border-0">
+            <div class="modal-content bg-transparent border-0 p-4">
+                <div class="text-center">
+                    <i
+                        class="fas {{ 'fa-exclamation-triangle text-danger' if result.prediction == 'Fake' else 'fa-check-circle text-success' }} fa-5x mb-3"></i>
+                    <h2 class="{{ 'text-danger' if result.prediction == 'Fake' else 'text-success' }}">
+                        {{ result.prediction }} Offer Detected
+                    </h2>
+                    <p class="lead">Confidence Score: <span class="fw-bold">{{ "%.2f" % (result.confidence * 100)
+                            }}%</span></p>
+                    <p class="text-muted small">
+                        {% if result.prediction == 'Fake' %}
+                        Warning: This offer contains patterns typical of fraudulent internship scams. Do not pay any
+                        fees or provide sensitive data.
+                        {% else %}
+                        This offer appears to be genuine based on our AI analysis.
+                        {% endif %}
+                    </p>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light mt-3">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

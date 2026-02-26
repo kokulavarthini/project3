@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-3">Detect Fake Job Offers with <span class="text-primary">AI</span></h1>
+        <p class="lead text-muted mb-4">
+            Protect yourself from phishing, scams, and fraudulent internship offers. Our system uses advanced Natural
+            Language Processing to analyze job descriptions and provide a real-time fraud probability score.
+        </p>
+        <div class="d-flex gap-3">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4">Get Started</a>
+            <a href="#features" class="btn btn-outline-secondary btn-lg px-4">Learn More</a>
+        </div>
+    </div>
+    <div class="col-lg-6 d-none d-lg-block">
+        <div class="glass-card p-4 text-center">
+            <i class="fas fa-user-secret fa-10x text-primary opacity-25"></i>
+            <div class="mt-4">
+                <span class="badge bg-danger p-2">Fraud Detected</span>
+                <span class="badge bg-success p-2">Verified Offer</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="features" class="row g-4 py-5">
+    <div class="col-md-4">
+        <div class="glass-card h-100 p-4">
+            <i class="fas fa-search fa-2x text-primary mb-3"></i>
+            <h3>Text Analysis</h3>
+            <p class="text-muted">Analyze the linguistic patterns and keywords typically used in scam offers.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card h-100 p-4">
+            <i class="fas fa-envelope-open-text fa-2x text-primary mb-3"></i>
+            <h3>Email Detection</h3>
+            <p class="text-muted">Identify fraudulent HR emails and unrealistic salary promises instantly.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card h-100 p-4">
+            <i class="fas fa-chart-line fa-2x text-primary mb-3"></i>
+            <h3>Fraud Score</h3>
+            <p class="text-muted">Get a confidence score for every submission based on our ML model.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
